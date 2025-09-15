@@ -10,510 +10,462 @@
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/white.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-
-		<!-- Custom styles for educational theme and timer -->
 		<style>
+			/* MINIMALIST DESIGN - ONE FOCUS PER SLIDE */
 			.reveal h1, .reveal h2, .reveal h3 {
 				color: #2c3e50;
+				text-align: center;
 			}
 
-			.timer-display {
-				position: fixed;
-				top: 20px;
-				right: 20px;
-				background: #3498db;
-				color: white;
-				padding: 10px 20px;
-				border-radius: 25px;
-				font-size: 1.2em;
-				font-weight: bold;
-				z-index: 1000;
+			.reveal h1 {
+				font-size: 2.2em;
+				margin-bottom: 0.5em;
 			}
 
-			.timer-display.warning {
-				background: #f39c12;
+			.reveal h2 {
+				font-size: 1.8em;
+				margin-bottom: 0.4em;
 			}
 
-			.timer-display.danger {
-				background: #e74c3c;
+			.reveal h3 {
+				font-size: 1.4em;
+				margin-bottom: 0.3em;
 			}
 
-			.step-indicator {
-				background: #ecf0f1;
-				padding: 15px;
+
+			/* Clean content blocks */
+			.content-box {
+				background: #f8f9fa;
+				padding: 1.5rem;
+				margin: 1rem 0;
 				border-left: 4px solid #3498db;
-				margin: 20px 0;
+				border-radius: 0 8px 8px 0;
 			}
 
-			.warning-box {
-				background: #fff3cd;
-				border: 1px solid #ffeaa7;
-				border-left: 4px solid #fdcb6e;
-				padding: 15px;
-				margin: 20px 0;
+			.highlight-box {
+				background: #e8f4f8;
+				padding: 1rem;
+				margin: 1rem 0;
+				border: 2px solid #3498db;
+				border-radius: 8px;
+				text-align: center;
 			}
 
-			.success-box {
-				background: #d4edda;
-				border: 1px solid #c3e6cb;
-				border-left: 4px solid #28a745;
-				padding: 15px;
-				margin: 20px 0;
-			}
-
-			.method-schema {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin: 30px 0;
-				flex-wrap: wrap;
+			/* Beautiful method diagram */
+			.method-flow {
+				display: grid;
+				grid-template-columns: 1fr auto 1fr auto 1fr;
+				grid-template-rows: auto auto auto;
+				gap: 1rem;
+				margin: 3rem 0;
+				max-width: 800px;
+				margin-left: auto;
+				margin-right: auto;
 			}
 
 			.method-step {
-				background: #3498db;
+				background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
 				color: white;
-				padding: 10px 15px;
-				margin: 5px 10px;
-				border-radius: 5px;
+				padding: 1rem 1.5rem;
+				border-radius: 12px;
+				font-weight: bold;
 				text-align: center;
-				min-width: 100px;
-				font-size: 0.9em;
+				box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+				transition: transform 0.2s ease;
+				position: relative;
 			}
 
+			.method-step:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+			}
+
+			/* Grid positioning */
+			.step-1 { grid-column: 1; grid-row: 1; }
+			.step-2 { grid-column: 3; grid-row: 1; }
+			.step-3 { grid-column: 5; grid-row: 1; }
+			.step-4 { grid-column: 5; grid-row: 3; }
+			.step-5 { grid-column: 3; grid-row: 3; }
+			.step-6 { grid-column: 1; grid-row: 3; }
+
+			/* Beautiful arrows */
 			.arrow {
-				font-size: 1.5em;
+				font-size: 2em;
 				color: #3498db;
-				margin: 0 5px;
+				font-weight: bold;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 			}
 
+			.arrow-right { grid-column: 2; grid-row: 1; }
+			.arrow-right2 { grid-column: 4; grid-row: 1; }
+			.arrow-down { grid-column: 5; grid-row: 2; transform: rotate(90deg); }
+			.arrow-left { grid-column: 4; grid-row: 3; }
+			.arrow-left2 { grid-column: 2; grid-row: 3; }
+
+			/* Mobile optimization */
+			@media (max-width: 768px) {
+				.reveal h1 { font-size: 1.8em; }
+				.reveal h2 { font-size: 1.5em; }
+				.reveal h3 { font-size: 1.2em; }
+
+				/* Mobile diagram - simple stack */
+				.method-flow {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 0.5rem;
+				}
+
+				.method-step {
+					padding: 0.8rem 1rem;
+					font-size: 0.9em;
+					min-width: 200px;
+				}
+
+				.arrow {
+					font-size: 1.5em;
+					transform: rotate(90deg);
+				}
+
+				/* Hide specific arrows for mobile */
+				.arrow-right, .arrow-right2, .arrow-left, .arrow-left2, .arrow-down {
+					display: none;
+				}
+
+				.content-box, .highlight-box {
+					padding: 1rem;
+					margin: 0.8rem 0;
+				}
+
+			}
+
+			/* Hide controls for students */
 			.controls-info {
 				position: fixed;
-				bottom: 20px;
-				left: 20px;
-				background: rgba(0,0,0,0.8);
+				bottom: 10px;
+				left: 10px;
+				background: rgba(0,0,0,0.7);
 				color: white;
-				padding: 10px;
-				border-radius: 5px;
-				font-size: 0.8em;
-				z-index: 1000;
+				padding: 0.5rem;
+				border-radius: 4px;
+				font-size: 0.7em;
+				opacity: 0.8;
 			}
 
 			@media (max-width: 768px) {
-				.method-schema {
-					flex-direction: column;
-				}
-
-				.timer-display {
-					top: 10px;
-					right: 10px;
-					font-size: 1em;
-					padding: 8px 15px;
-				}
-
-				.controls-info {
-					display: none;
-				}
+				.controls-info { display: none; }
 			}
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<!-- Slide 1: Welkom & Doel -->
+				<!-- Slide 1: Welkom - MINIMAL -->
 				<section>
 					<h1>Leren van Kritieke Momenten in de Stage</h1>
 					<h3>Incidentmethode Intervisie</h3>
-					<div class="step-indicator">
-						<h4>Doel van vandaag:</h4>
+					<div class="highlight-box">
+						<p><strong>Samen leren van moeilijke situaties</strong></p>
+					</div>
+					<p><small>60 minuten</small></p>
+					<aside class="notes">
+						<p>Welkom allemaal. Vandaag gaan we samen kijken naar die momenten in jullie stage waar je dacht: 'Hoe pak ik dit aan?' of 'Dit ging niet zoals ik wilde.'</p>
+						<h3>CONTROLS:</h3>
 						<ul>
-							<li>Samen leren van moeilijke situaties uit jullie stage</li>
-							<li>Gestructureerd bespreken met de Incidentmethode</li>
-							<li>Concrete handvatten voor toekomstige situaties</li>
+							<li>'t' = timer start | 'r' = reset | 'h' = hide timer</li>
+							<li>'s' = speaker notes | 'f' = fullscreen</li>
 						</ul>
-					</div>
-					<p><small>Totale tijd: 60 minuten | <strong>Toets 't' voor timer, 'r' voor reset</strong></small></p>
-					<aside class="notes">
-						Welkom allemaal. Vandaag gaan we samen kijken naar die momenten in jullie stage waar je dacht: 'Hoe pak ik dit aan?' of 'Dit ging niet zoals ik wilde.'
 					</aside>
 				</section>
 
-				<!-- Slide 2: Wat is de Incidentmethode? -->
+				<!-- Slide 2: Methode Schema - BEAUTIFUL DIAGRAM -->
 				<section>
-					<h2>Wat is de Incidentmethode?</h2>
-					<div class="method-schema">
-						<div class="method-step">1. Inventariseren</div>
-						<div class="arrow">→</div>
-						<div class="method-step">2. Toelichting</div>
-						<div class="arrow">→</div>
-						<div class="method-step">3. Vragen stellen</div>
-					</div>
-					<div class="method-schema">
-						<div class="method-step">6. Keuze maken</div>
-						<div class="arrow">←</div>
-						<div class="method-step">5. Oplossingen</div>
-						<div class="arrow">←</div>
-						<div class="method-step">4. Diagnose</div>
-					</div>
-					<div class="success-box">
-						<strong>6 stappen</strong> voor het bespreken van lastige situaties<br>
-						<strong>Gestructureerd</strong> en <strong>veilig</strong><br>
-						<strong>Iedereen leert</strong> - niet alleen degene die inbrengt
+					<h2>6 Stappen</h2>
+					<div class="method-flow">
+						<div class="method-step step-1">1. Inventariseren</div>
+						<div class="arrow arrow-right">→</div>
+						<div class="method-step step-2">2. Toelichting</div>
+						<div class="arrow arrow-right2">→</div>
+						<div class="method-step step-3">3. Vragen</div>
+
+						<div class="arrow arrow-down">→</div>
+
+						<div class="method-step step-6">6. Keuze</div>
+						<div class="arrow arrow-left2">←</div>
+						<div class="method-step step-5">5. Oplossingen</div>
+						<div class="arrow arrow-left">←</div>
+						<div class="method-step step-4">4. Diagnose</div>
 					</div>
 					<aside class="notes">
-						De Incidentmethode bestaat uit 6 duidelijke stappen die ons helpen om systematisch naar moeilijke situaties te kijken en er van te leren.
+						<p>De Incidentmethode bestaat uit 6 duidelijke stappen die ons helpen om systematisch naar moeilijke situaties te kijken.</p>
 					</aside>
 				</section>
 
-				<!-- Slide 3: Spelregels & Veiligheid -->
+				<!-- Slide 3: Spelregels - ESSENTIAL ONLY -->
 				<section>
-					<h2>Spelregels & Veiligheid</h2>
-					<div class="warning-box">
-						<h4>🔒 Vertrouwelijkheid</h4>
+					<h2>Spelregels</h2>
+					<div class="content-box">
+						<h3>🔒 Vertrouwelijk</h3>
 						<p>Wat hier besproken wordt, blijft hier</p>
 					</div>
 					<ul>
-						<li><strong>Geen oordelen:</strong> We helpen elkaar leren</li>
-						<li><strong>Echte situaties:</strong> Het moet echt gebeurd zijn</li>
+						<li><strong>Geen oordelen</strong> - we helpen elkaar</li>
+						<li><strong>Echte situaties</strong> delen</li>
 						<li><strong>Respectvol luisteren</strong></li>
-						<li><strong>Procesbegeleider:</strong> Docent houdt structuur in de gaten</li>
 					</ul>
 					<aside class="notes">
-						Deze spelregels zorgen ervoor dat iedereen zich veilig voelt om kwetsbare momenten te delen.
+						<p>Deze spelregels zorgen voor een veilige omgeving om kwetsbare momenten te delen.</p>
 					</aside>
 				</section>
 
-				<!-- Slide 4: STAP 1 - Inventariseren -->
-				<section data-countdown="600">
+				<!-- Slide 4: Tijdsoverzicht - CLEAN TABLE -->
+				<section>
+					<h2>Tijdsplanning</h2>
+					<div class="content-box">
+						<h3>Vandaag 60 minuten:</h3>
+						<ul>
+							<li>Introductie: 7 min</li>
+							<li>Inventariseren: 10 min</li>
+							<li>Toelichting: 5 min</li>
+							<li>Vragen stellen: 15 min</li>
+							<li>Diagnose: 8 min</li>
+							<li>Oplossingen: 8 min</li>
+							<li>Keuze maken: 5 min</li>
+							<li>Reflectie: 5 min</li>
+						</ul>
+					</div>
+					<aside class="notes">
+						<h3>COMPLETE TIJDSOVERZICHT:</h3>
+						<p>Intro (7) → Inventariseren (17) → Toelichting (22) → Vragen (37) → Diagnose (45) → Oplossingen (53) → Keuze (58) → Reflectie (63)</p>
+						<p>Gebruik de timer ('t' toets) voor elke stap. Houd de tijd streng in de gaten.</p>
+					</aside>
+				</section>
+
+				<!-- Slide 5: STAP 1 Introductie - MINIMAL -->
+				<section data-timer="600">
 					<h2>STAP 1: Inventariseren</h2>
-					<div class="timer-display" id="timer-step1">⏱️ 10:00</div>
-					<div class="step-indicator">
-						<h4>Voor iedereen:</h4>
-						<ul>
-							<li>Denk aan een <strong>kritiek moment</strong> uit je stage</li>
-							<li><strong>Tot het kritieke punt:</strong> Vertel NIET hoe je reageerde of hoe het afliep</li>
-							<li><strong>Voorbeeld:</strong> "Ik stond voor de groep en een kind begon heel vervelend te doen. Op dat moment wist ik niet..."</li>
-						</ul>
+					<p><small><em>10 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>Denk aan een kritiek moment uit je stage</h3>
 					</div>
-					<div class="warning-box">
-						<strong>Instructies:</strong><br>
-						• 2 minuten stil nadenken<br>
-						• Iedereen 1-2 minuten om situatie te schetsen<br>
-						• Groep kiest gezamenlijk welke situatie eerst
-					</div>
+					<p><strong>Vertel tot het kritieke punt - niet hoe je reageerde</strong></p>
 					<aside class="notes">
-						Laat iedereen eerst 2 minuten stil nadenken aan hun situatie. Dan gaat iedereen kort (1-2 minuten) zijn situatie schetsen tot het kritieke punt. Daarna kiest de groep gezamenlijk welke situatie eerst behandeld wordt.
+						<h3>⏱️ STAP 1: INVENTARISEREN (10 MINUTEN)</h3>
+						<ol>
+							<li><strong>2 min:</strong> Stil nadenken aan kritieke momenten</li>
+							<li><strong>6 min:</strong> Situaties delen (elk 1-2 min tot kritieke punt)</li>
+							<li><strong>2 min:</strong> Groep kiest welke situatie eerst behandelen</li>
+						</ol>
+						<p><strong>BELANGRIJK:</strong> Studenten mogen nog NIET vertellen hoe ze reageerden of hoe het afliep!</p>
 					</aside>
 				</section>
 
-				<!-- Slide 5: STAP 2 - Toelichting -->
-				<section data-countdown="300">
+				<!-- Slide 6: STAP 1 Voorbeeld - SEPARATE -->
+				<section>
+					<h3>Voorbeeld kritiek moment:</h3>
+					<div class="content-box">
+						<p><em>"Ik belde een manager voor mijn onderzoek. Hij reageerde geïrriteerd: 'Geen tijd voor studenten projectjes!' Op dat moment wist ik niet..."</em></p>
+					</div>
+					<div class="highlight-box">
+						<p><strong>Stop hier - nog geen oplossing vertellen!</strong></p>
+					</div>
+					<aside class="notes">
+						<p>Dit voorbeeld is relevant voor HBO Bedrijfskunde studenten: onderzoek doen, contact met stakeholders, professionele communicatie. Het helpt studenten begrijpen wat wel en niet vertellen in stap 1.</p>
+					</aside>
+				</section>
+
+				<!-- Slide 7: STAP 2 - CLEAN -->
+				<section data-timer="300">
 					<h2>STAP 2: Toelichting</h2>
-					<div class="timer-display" id="timer-step2">⏱️ 5:00</div>
-					<div class="step-indicator">
-						<h4>Voor de inbrenger:</h4>
-						<ul>
-							<li><strong>Vertel je situatie compleet</strong> tot het kritieke moment</li>
-							<li><strong>Benoem je vraag:</strong> "Ik wil hulp bij..." of "Ik worstel met..."</li>
-						</ul>
+					<p><small><em>5 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>Nu mag je je verhaal compleet vertellen</h3>
 					</div>
-					<div class="success-box">
-						<h3>Centrale vraag:</h3>
-						<strong>"Waar heb je precies hulp bij nodig?"</strong>
-					</div>
+					<p><strong>"Waar heb je precies hulp bij nodig?"</strong></p>
 					<aside class="notes">
-						Let op: gaat het om bovenstroom (gedrag/actie) of onderstroom (gevoel/gedachte)? Dit helpt bij de vervolgstappen.
+						<h3>⏱️ STAP 2: TOELICHTING (5 MINUTEN)</h3>
+						<p><strong>Inbrenger vertelt nu volledige verhaal</strong> tot kritieke moment.</p>
+						<p><strong>Help met vraag formuleren:</strong> "Ik wil hulp bij..." of "Ik worstel met..."</p>
+						<p><strong>Let op:</strong> Bovenstroom (gedrag/actie) vs onderstroom (gevoel/gedachte)?</p>
 					</aside>
 				</section>
 
-				<!-- Slide 6: STAP 3 - Informatieronde -->
-				<section data-countdown="900">
+				<!-- Slide 8: STAP 3 Introductie - SIMPLE -->
+				<section data-timer="900">
 					<h2>STAP 3: Informatieronde</h2>
-					<div class="timer-display" id="timer-step3">⏱️ 15:00</div>
-					<div class="step-indicator">
-						<h4>Voor medestudenten:</h4>
-						<ul>
-							<li>Stel <strong>alleen vragen</strong> ter verduidelijking</li>
-							<li><strong>Inbrenger:</strong> Geef korte, duidelijke antwoorden</li>
-						</ul>
+					<p><small><em>15 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>Nu gaan we vragen stellen</h3>
+						<p>Alleen om situatie beter te begrijpen</p>
 					</div>
-					<div class="warning-box">
-						<h3>🚫 BELANGRIJK:</h3>
-						<ul>
-							<li><strong>GEEN OPLOSSINGEN NOG!</strong></li>
-							<li><strong>GEEN SUGGESTIES!</strong></li>
-						</ul>
-					</div>
-					<div class="success-box">
-						<h4>Goede vragen:</h4>
-						<ul>
-							<li>"Wat gebeurde er precies toen...?"</li>
-							<li>"Hoe reageerde de ander?"</li>
-							<li>"Wat voelde je op dat moment?"</li>
-						</ul>
+					<div class="content-box">
+						<p><strong>Nog geen oplossingen!</strong></p>
 					</div>
 					<aside class="notes">
-						Deze stap wordt vaak onderschat, maar de vragen zetten de inbrenger al aan het denken. Soms heeft de inbrenger na deze stap zijn antwoord al gevonden!
+						<h3>⏱️ STAP 3: INFORMATIERONDE (15 MINUTEN)</h3>
+						<p><strong>🚫 STRENG HANDHAVEN:</strong></p>
+						<ul>
+							<li>GEEN OPLOSSINGEN!</li>
+							<li>GEEN SUGGESTIES!</li>
+							<li>Alleen vragen ter verduidelijking</li>
+						</ul>
+						<p><strong>Deze stap wordt vaak onderschat</strong> maar zet inbrenger al aan het denken!</p>
 					</aside>
 				</section>
 
-				<!-- Slide 7: STAP 4 - Diagnose -->
-				<section data-countdown="480">
+				<!-- Slide 9: STAP 3 Voorbeeldvragen - SEPARATE -->
+				<section>
+					<h3>Goede vragen zijn:</h3>
+					<ul>
+						<li>"Wat gebeurde er precies toen...?"</li>
+						<li>"Hoe reageerde de ander?"</li>
+						<li>"Wat voelde je op dat moment?"</li>
+					</ul>
+					<div class="highlight-box">
+						<p><strong>Eerst begrijpen, daarna oplossen</strong></p>
+					</div>
+					<aside class="notes">
+						<p>Help studenten met goede vragen als ze vastlopen. Focus op feiten en gevoelens, niet op oplossingen.</p>
+					</aside>
+				</section>
+
+				<!-- Slide 10: STAP 4 - CLEAN -->
+				<section data-timer="480">
 					<h2>STAP 4: Diagnose</h2>
-					<div class="timer-display" id="timer-step4">⏱️ 8:00</div>
-					<div class="step-indicator">
-						<h4>Iedereen geeft zijn kijk:</h4>
-						<ul>
-							<li>"Wat is hier aan de hand?"</li>
-							<li>"Wat is de kern van het probleem?"</li>
-						</ul>
+					<p><small><em>8 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>Wat is hier aan de hand?</h3>
+						<p>Iedereen geeft zijn mening</p>
 					</div>
-					<div class="warning-box">
-						<strong>Inbrenger:</strong> Luistert alleen, geen reactie
-					</div>
-					<div class="success-box">
-						<strong>"Wees eerlijk en direct - dit helpt het meest"</strong>
-					</div>
+					<p><strong>Inbrenger luistert alleen</strong></p>
 					<aside class="notes">
-						Zorg ervoor dat iedereen kort en krachtig zijn diagnose geeft zonder uitgebreide toelichting. De toegevoegde waarde zit in de verschillende perspectieven.
+						<h3>⏱️ STAP 4: DIAGNOSE (8 MINUTEN)</h3>
+						<p><strong>Iedereen geeft kort en krachtig zijn diagnose.</strong></p>
+						<ul>
+							<li>Verschillende perspectieven verruimen blikveld</li>
+							<li>Wees eerlijk en direct - dat helpt het meest</li>
+							<li>Geen uitgebreide toelichting</li>
+						</ul>
 					</aside>
 				</section>
 
-				<!-- Slide 8: STAP 5 - Oplossingen -->
-				<section data-countdown="480">
+				<!-- Slide 11: STAP 5 - SIMPLE -->
+				<section data-timer="480">
 					<h2>STAP 5: Oplossingen</h2>
-					<div class="timer-display" id="timer-step5">⏱️ 8:00</div>
-					<div class="step-indicator">
-						<h4>Voor iedereen:</h4>
-						<ul>
-							<li><strong>Concreet en praktisch:</strong> "Zo zou ik het aanpakken..."</li>
-							<li><strong>Geen discussie</strong> over elkaars ideeën</li>
-						</ul>
+					<p><small><em>8 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>"Als ik in jouw situatie was..."</h3>
+						<p>Nu mogen we oplossingen bedenken</p>
 					</div>
-					<div class="success-box">
-						<h3>Voorbeeldzin:</h3>
-						<strong>"Als ik in jouw situatie was geweest, dan had ik..."</strong>
-					</div>
+					<p><strong>Concreet en praktisch</strong></p>
 					<aside class="notes">
-						Nu komen de concrete oplossingen. Iedereen geeft zijn aanpak zonder dat er gediscussieerd wordt over de verschillende voorstellen.
+						<h3>⏱️ STAP 5: OPLOSSINGEN (8 MINUTEN)</h3>
+						<p><strong>Nu concrete oplossingen bedenken:</strong></p>
+						<ul>
+							<li>Iedereen geeft zijn praktische aanpak</li>
+							<li>Geen discussie over elkaars voorstellen</li>
+							<li>Houd het concreet en toepasbaar</li>
+						</ul>
 					</aside>
 				</section>
 
-				<!-- Slide 9: STAP 6 - Keuze Inbrenger -->
-				<section data-countdown="300">
-					<h2>STAP 6: Keuze van de Inbrenger</h2>
-					<div class="timer-display" id="timer-step6">⏱️ 5:00</div>
-					<div class="step-indicator">
-						<h4>Voor de inbrenger:</h4>
-						<ul>
-							<li><strong>"Een volgende keer ga ik het zo doen..."</strong></li>
-							<li>Kan een voorgestelde oplossing zijn of combinatie</li>
-							<li><strong>Concreet:</strong> Wat ga je anders doen?</li>
-						</ul>
+				<!-- Slide 12: STAP 6 - FOCUS -->
+				<section data-timer="300">
+					<h2>STAP 6: Jouw Keuze</h2>
+					<p><small><em>5 minuten</em></small></p>
+					<div class="highlight-box">
+						<h3>"Een volgende keer ga ik..."</h3>
 					</div>
-					<div class="success-box">
-						<h3>Centrale vraag:</h3>
-						<strong>"Wat neem je mee naar je stage?"</strong>
-					</div>
+					<p><strong>Wat neem je mee naar je stage?</strong></p>
 					<aside class="notes">
-						Dit is het moment waarop de inbrenger concreet aangeeft wat hij of zij geleerd heeft en hoe hij/zij het een volgende keer anders gaat aanpakken.
+						<h3>⏱️ STAP 6: KEUZE INBRENGER (5 MINUTEN)</h3>
+						<p><strong>Dit is het leermoment!</strong></p>
+						<ul>
+							<li>Inbrenger kiest concreet wat anders te doen</li>
+							<li>Maak het specifiek en actionable</li>
+							<li>"Een volgende keer ga ik..."</li>
+						</ul>
 					</aside>
 				</section>
 
-				<!-- Slide 10: Afronden & Reflectie -->
-				<section data-countdown="300">
-					<h2>Afronden & Reflectie</h2>
-					<div class="timer-display" id="timer-reflection">⏱️ 5:00</div>
-					<div class="step-indicator">
-						<h4>Voor iedereen:</h4>
+				<!-- Slide 13: Reflectie - SIMPLE -->
+				<section data-timer="300">
+					<h2>Reflectie</h2>
+					<p><small><em>5 minuten</em></small></p>
+					<div class="content-box">
 						<ul>
-							<li><strong>"Wat heeft deze bespreking jou opgeleverd?"</strong></li>
-							<li><strong>"Wie herkende zich in deze situatie?"</strong></li>
-							<li><strong>"Wat kun je gebruiken in je eigen stage?"</strong></li>
+							<li><strong>Wat heeft dit jou opgeleverd?</strong></li>
+							<li><strong>Wie herkende zich hierin?</strong></li>
+							<li><strong>Wat kun je gebruiken?</strong></li>
 						</ul>
 					</div>
-					<div class="success-box">
-						<h3>Afsluiting:</h3>
-						<strong>"Zo leren we van elkaars ervaringen en worden we samen betere professionals."</strong>
-					</div>
 					<aside class="notes">
-						Deze reflectieronde zorgt ervoor dat ook de andere studenten expliciet maken wat zij van de sessie hebben geleerd.
+						<h3>⏱️ REFLECTIE (5 MINUTEN)</h3>
+						<p><strong>Andere studenten maken expliciet wat zij geleerd hebben:</strong></p>
+						<ul>
+							<li>Herkenning verhoogt leereffect voor iedereen</li>
+							<li>Concrete toepassingen voor eigen stage</li>
+							<li>Waardering voor openheid en delen</li>
+						</ul>
 					</aside>
 				</section>
 
-				<!-- Slide 11: Voor als er tijd over is -->
+				<!-- Slide 14: Afsluiting - MINIMAL -->
 				<section>
-					<h2>Voor als er tijd over is...</h2>
-					<div class="step-indicator">
-						<h4>Opties:</h4>
-						<ul>
-							<li><strong>Tweede ronde:</strong> Andere situatie bespreken (verkorte versie)</li>
-							<li><strong>Algemene tips:</strong> Uitwisselen voor veelvoorkomende situaties</li>
-							<li><strong>Vervolgafspraken:</strong> Wat gaan we de komende weken proberen?</li>
-						</ul>
+					<h2>Bedankt!</h2>
+					<div class="highlight-box">
+						<h3>Samen sterker door ervaringen delen</h3>
 					</div>
-					<div class="success-box">
-						<h3>Bedankt voor jullie openheid en betrokkenheid!</h3>
-						<p>Veel succes met jullie stages 🎯</p>
-					</div>
+					<p><strong>Veel succes met jullie stages! 🎯</strong></p>
 					<aside class="notes">
-						Gebruik deze slide alleen als er daadwerkelijk tijd over is. Anders kun je direct afsluiten na de reflectie.
+						<p>Sluit af met waardering voor openheid en moed om kwetsbare momenten te delen.</p>
 					</aside>
 				</section>
 
-				<!-- Bonus: Tijdsoverzicht voor Docent -->
+				<!-- Slide 15: Extra tijd - OPTIONAL -->
 				<section>
-					<h2>Tijdsoverzicht</h2>
-					<table style="font-size: 0.7em; margin: 0 auto;">
-						<thead>
-							<tr>
-								<th style="text-align: left; padding: 8px;">Onderdeel</th>
-								<th style="text-align: center; padding: 8px;">Tijd</th>
-								<th style="text-align: center; padding: 8px;">Totaal</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr><td style="padding: 4px;">Introductie (slides 1-3)</td><td style="text-align: center; padding: 4px;">7 min</td><td style="text-align: center; padding: 4px;">7 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 1: Inventariseren</td><td style="text-align: center; padding: 4px;">10 min</td><td style="text-align: center; padding: 4px;">17 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 2: Toelichting</td><td style="text-align: center; padding: 4px;">5 min</td><td style="text-align: center; padding: 4px;">22 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 3: Informatieronde</td><td style="text-align: center; padding: 4px;">15 min</td><td style="text-align: center; padding: 4px;">37 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 4: Diagnose</td><td style="text-align: center; padding: 4px;">8 min</td><td style="text-align: center; padding: 4px;">45 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 5: Oplossingen</td><td style="text-align: center; padding: 4px;">8 min</td><td style="text-align: center; padding: 4px;">53 min</td></tr>
-							<tr><td style="padding: 4px;">Stap 6: Keuze</td><td style="text-align: center; padding: 4px;">5 min</td><td style="text-align: center; padding: 4px;">58 min</td></tr>
-							<tr><td style="padding: 4px;">Afsluiting</td><td style="text-align: center; padding: 4px;">5 min</td><td style="text-align: center; padding: 4px;">63 min</td></tr>
-						</tbody>
-					</table>
+					<h3>Extra tijd?</h3>
+					<ul>
+						<li><strong>Tweede situatie</strong> bespreken</li>
+						<li><strong>Algemene tips</strong> uitwisselen</li>
+						<li><strong>Vervolgafspraken</strong> maken</li>
+					</ul>
 					<aside class="notes">
-						Deze slide is bedoeld als referentie voor jou als docent om de tijd in de gaten te houden.
+						<p>Gebruik alleen als er tijd over is. Anders direct afsluiten na reflectie.</p>
 					</aside>
 				</section>
 			</div>
 		</div>
 
-		<!-- Fixed controls info -->
+		<!-- Clean controls -->
 		<div class="controls-info">
-			<strong>Toetsen:</strong> 't' = timer start | 'r' = reset | 's' = speaker notes | 'f' = fullscreen
+			<strong>Docent:</strong> 's'=speaker notes (timer) | 'f'=fullscreen
 		</div>
 
 		<script src="dist/reveal.js"></script>
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
-		<script src="countdown-plugin/countdown.js"></script>
 		<script>
-			// Initialize reveal.js with countdown plugin
+			// Clean RevealJS initialization with speaker timer
 			Reveal.initialize({
 				hash: true,
+				controls: true,
+				progress: true,
+				center: true,
+				transition: 'slide',
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
-
-				// Countdown configuration
-				countdown: {
-					defaultTime: 600, // 10 minutes default
-					autostart: "no",
-					tDelta: 60, // 1 minute increments
-					playTickSoundLast: 10,
-					tickSound: null, // No tick sound for classroom setting
-					timesUpSound: null // No sound when time is up
-				}
+				// Enable speaker notes with built-in timer
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
 
-			// Custom timer functionality for each step
-			let currentTimer = null;
-			let timerInterval = null;
-
-			function startTimer(seconds, displayElement) {
-				if (timerInterval) {
-					clearInterval(timerInterval);
-				}
-
-				let timeLeft = seconds;
-				const display = document.getElementById(displayElement);
-
-				function updateDisplay() {
-					const minutes = Math.floor(timeLeft / 60);
-					const secs = timeLeft % 60;
-					const timeString = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
-
-					if (display) {
-						display.textContent = timeString;
-						display.className = 'timer-display';
-
-						if (timeLeft <= 60) {
-							display.className += ' danger';
-						} else if (timeLeft <= 180) {
-							display.className += ' warning';
-						}
-					}
-				}
-
-				updateDisplay();
-
-				timerInterval = setInterval(() => {
-					timeLeft--;
-					updateDisplay();
-
-					if (timeLeft <= 0) {
-						clearInterval(timerInterval);
-						if (display) {
-							display.textContent = '⏰ Tijd om!';
-							display.className = 'timer-display danger';
-						}
-					}
-				}, 1000);
-			}
-
-			// Keyboard controls
-			document.addEventListener('keydown', function(event) {
-				const currentSlide = Reveal.getCurrentSlide();
-				const countdown = currentSlide.getAttribute('data-countdown');
-
-				// 't' key starts timer for current slide
-				if (event.key === 't' && countdown) {
-					const seconds = parseInt(countdown);
-					let timerId = null;
-
-					// Find timer display on current slide
-					const timerDisplay = currentSlide.querySelector('.timer-display');
-					if (timerDisplay) {
-						timerId = timerDisplay.id;
-					}
-
-					if (timerId) {
-						startTimer(seconds, timerId);
-					}
-				}
-
-				// 'r' key resets timer
-				if (event.key === 'r') {
-					if (timerInterval) {
-						clearInterval(timerInterval);
-					}
-					// Reset all timers to initial state
-					document.querySelectorAll('.timer-display').forEach(display => {
-						const slideSection = display.closest('section');
-						if (slideSection) {
-							const countdown = slideSection.getAttribute('data-countdown');
-							if (countdown) {
-								const seconds = parseInt(countdown);
-								const minutes = Math.floor(seconds / 60);
-								const secs = seconds % 60;
-								display.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
-								display.className = 'timer-display';
-							}
-						}
-					});
-				}
-			});
-
-			// Show welcome message on load
-			Reveal.on('ready', function() {
-				console.log('🎉 Stage Kritieke Incident Presentatie geladen!');
-				console.log('⏱️  Gebruik "t" toets om timer te starten');
-				console.log('🔄 Gebruik "r" toets om timers te resetten');
-				console.log('📝 Gebruik "s" toets voor speaker notes');
+			// Simple ready message
+			Reveal.on('ready', () => {
+				console.log('🎉 Stage Kritieke Incident Presentatie Ready!');
+				console.log('📝 Druk "s" voor speaker notes met timer');
+				console.log('🖥️  Druk "f" voor fullscreen presentatie');
 			});
 		</script>
 	</body>
